@@ -1,0 +1,104 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Packaging
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+MANIFEST
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+.pyre/
+.ruff_cache/
+
+# Environments
+.env
+.env.*
+!.env.example
+.venv/
+.venv_*/
+venv/
+env/
+ENV/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Notebooks
+.ipynb_checkpoints/
+
+# EvalRing run artifacts (results, caches, logs). These are reproducible
+# outputs and can contain prompt/response text from private datasets.
+_EvalRing/
+.log/
+logs/
+
+# Agent scratch space (see CONTRIBUTING.md)
+.agent_temp/
+
+# Large or licence-restricted datasets. Fixtures under tests/ and the small
+# committed example inputs are allowed explicitly below.
+examples/*/data/*.csv
+examples/*/data/*.tsv
+examples/*/data/*.jsonl
+examples/*/data/*.parquet
+examples/*/data/*.pkl
+!examples/**/README.md
+
+# CounselBench is a separate upstream repository, vendored locally only.
+CounselBench/
+
+# Local credential files used by example scripts. Never commit these; use the
+# environment variables documented in docs/CONFIGURATION.md instead.
+examples/**/config.json
+!examples/**/config.example.json
+**/*_api_key*.json
+**/credentials.json
+
+# Legacy / scratch working directories inside examples
+examples/suicide_detection/deepeval/
+examples/suicide_detection/data_load/
+examples/suicide_detection/src/
+examples/*/ground_truth/data/
+examples/*/ground_truth/logs/
+examples/*/ground_truth/results/
+examples/hle/data/
+examples/*/model_list_*.json
+!examples/*/model_list.json
+
+# Lockfiles are not committed: EvalRing is a library, so CI resolves
+# dependencies fresh in order to catch upstream breakage early. Applications
+# that depend on EvalRing should pin in their own lockfile.
+uv.lock
+poetry.lock
+
+# Local developer scratch scripts, kept out of releases.
+tools/
+
+# Clinical datasets are never committed. The med_note notebook downloads what
+# it needs; see docs/DATA.md for the terms that apply.
+examples/sample/med_note/sample/
+examples/sample/med_note/*.csv.gz
+examples/sample/med_note/data.json

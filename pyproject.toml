@@ -1,0 +1,146 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evalring"
+dynamic = ["version"]
+description = "A unified evaluation framework for agents across LLMs and agent versions"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "CoronRing" }]
+maintainers = [{ name = "CoronRing" }]
+keywords = ["evaluation", "llm", "agents", "benchmark", "llm-as-a-judge", "nlp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10"
+
+# Core runtime. Everything listed here is imported by the framework itself;
+# provider SDKs and plotting live in the extras below.
+dependencies = [
+    "pandas>=1.5",
+    "tqdm>=4.62",
+    "python-dotenv>=1.0",
+    "requests>=2.25",
+]
+
+[project.optional-dependencies]
+# Calling models. Install this unless you only evaluate offline agents.
+llm = [
+    "litellm>=1.40",
+    "openai>=1.0",
+    "httpx>=0.24",
+]
+# Suite charts written next to the run artifacts.
+viz = ["matplotlib>=3.5"]
+# Synthetic data generation (EvalRing.dataset.ai_data_generator).
+datagen = [
+    "openai>=1.0",
+    "nest-asyncio>=1.5",
+]
+all = ["evalring[llm,viz,datagen]"]
+dev = [
+    "evalring[all]",
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.6",
+    "mypy>=1.8",
+    "pandas-stubs",
+    "types-requests",
+    "build>=1.0",
+    "twine>=5.0",
+]
+
+[project.scripts]
+evalring = "EvalRing.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/CoronRing/EvalRing"
+Repository = "https://github.com/CoronRing/EvalRing"
+Documentation = "https://github.com/CoronRing/EvalRing/tree/main/docs"
+Changelog = "https://github.com/CoronRing/EvalRing/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/CoronRing/EvalRing/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "EvalRing.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["EvalRing*"]
+
+[tool.setuptools.package-data]
+EvalRing = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+extend-exclude = ["examples", "CounselBench", ".agent_temp"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4"]
+ignore = [
+    "E501",   # line length is enforced by the formatter, not the linter
+    "B008",   # function calls in argument defaults are used deliberately here
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+# Prompt templates wrap mid-sentence; the trailing space before each newline is
+# part of the prompt text and must not be stripped by a linter.
+"src/EvalRing/evaluator/llm_judge/template.py" = ["W291"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "network: test requires outbound network access (deselect with '-m \"not network\"')",
+]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src/EvalRing"]
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true
+# Annotation coverage is being raised module by module; see docs/CONTRIBUTING
+# guidance before tightening these two.
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[[tool.mypy.overrides]]
+module = ["EvalRing.config", "EvalRing.logging_utils", "EvalRing.cli"]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.coverage.run]
+source = ["EvalRing"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

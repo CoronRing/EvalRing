@@ -1,0 +1,4 @@
+# Full-fidelity archive with embedded image data-URIs (large, regenerate via ingest_hle.py)
+data/hle_full.jsonl
+# Evaluation run outputs
+_EvalRing/

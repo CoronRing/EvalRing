@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/CoronRing/EvalRing/security/advisories/new
+    about: Report privately through a security advisory, not a public issue.
+  - name: Questions and usage help
+    url: https://github.com/CoronRing/EvalRing/discussions
+    about: Ask about using EvalRing.

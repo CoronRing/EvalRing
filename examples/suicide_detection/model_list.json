@@ -1,0 +1,51 @@
+{
+  "generated_at_utc": "2026-07-07T00:00:00.000000+00:00",
+  "source": "https://openrouter.ai/api/v1/models",
+  "sort_key": "pricing.total_usd_per_1m_tokens (ascending)",
+  "models": [
+    {
+      "requested": "GPT-5 mini",
+      "year": 2024,
+      "available": true,
+      "exact_match": true,
+      "openrouter_id": "openai/gpt-5-mini",
+      "openrouter_name": "OpenAI: GPT-5 Mini",
+      "pricing": {
+        "prompt_usd_per_token": 2.5e-07,
+        "completion_usd_per_token": 2e-06,
+        "total_usd_per_1m_tokens": 2.25
+      },
+      "note": null
+    },
+    {
+      "requested": "Clarke 1.0",
+      "year": 2026,
+      "available": true,
+      "exact_match": true,
+      "openrouter_id": "clarke-1.0",
+      "openrouter_name": null,
+      "pricing": null,
+      "note": "LiteLLM/Radium model; pricing is not sourced from OpenRouter."
+    },
+    {
+      "requested": "Tycho 1.0",
+      "year": 2026,
+      "available": true,
+      "exact_match": true,
+      "openrouter_id": "tycho-1.0",
+      "openrouter_name": null,
+      "pricing": null,
+      "note": "LiteLLM/Radium model; pricing is not sourced from OpenRouter."
+    },
+    {
+      "requested": "HAL 1.0",
+      "year": 2026,
+      "available": true,
+      "exact_match": true,
+      "openrouter_id": "hal-1.0",
+      "openrouter_name": null,
+      "pricing": null,
+      "note": "LiteLLM/Radium model; pricing is not sourced from OpenRouter."
+    }
+  ]
+}

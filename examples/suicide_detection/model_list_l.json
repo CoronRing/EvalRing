@@ -1,0 +1,21 @@
+{
+  "generated_at_utc": "2026-03-31T19:52:24.104199+00:00",
+  "source": "https://openrouter.ai/api/v1/models",
+  "sort_key": "pricing.total_usd_per_1m_tokens (ascending)",
+  "models": [
+    {
+      "requested": "Llama-3",
+      "year": 2023,
+      "available": true,
+      "exact_match": true,
+      "openrouter_id": "meta-llama/llama-3.3-70b-instruct",
+      "openrouter_name": "Meta: Llama 3.3 70B Instruct",
+      "pricing": {
+        "prompt_usd_per_token": 1e-07,
+        "completion_usd_per_token": 3.2e-07,
+        "total_usd_per_1m_tokens": 0.42
+      },
+      "note": null
+    }
+  ]
+}

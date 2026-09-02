@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The test suite is offline by design. An empty value here means a stray
+  # network call surfaces as a missing-credentials error instead of silently
+  # billing someone's account.
+  EVALRING_API_KEY: ""
+
+jobs:
+  lint:
+    name: Lint and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: python -m pip install --upgrade pip && pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: ruff check src tests
+
+      - name: Ruff format
+        run: ruff format --check src tests
+
+      - name: Mypy
+        run: mypy
+
+  test:
+    name: Tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          # The framework writes run artifacts and a SQLite cache to disk, so
+          # path handling is verified on Windows and macOS too.
+          - os: windows-latest
+            python-version: "3.12"
+          - os: macos-latest
+            python-version: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install
+        run: python -m pip install --upgrade pip && pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest --cov=EvalRing --cov-report=term-missing --cov-report=xml
+
+      - name: Verify the CLI is wired up
+        run: |
+          evalring --version
+          evalring check || true
+
+      - name: Upload coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+
+  minimal-install:
+    name: Core install without extras
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install core only
+        run: python -m pip install --upgrade pip && pip install .
+
+      - name: Import and CLI must work without optional packages
+        run: |
+          python -c "import EvalRing; print(EvalRing.__version__)"
+          python -c "from EvalRing import ClassificationEvaluator, JSONDataset, MockAgent"
+          evalring --version
+
+  build:
+    name: Build distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build
+        run: python -m pip install --upgrade pip build twine && python -m build
+
+      - name: Check metadata
+        run: twine check dist/*
+
+      - name: Assert the wheel ships only the EvalRing package
+        run: |
+          python - <<'PY'
+          import zipfile, glob, sys
+          wheel = glob.glob("dist/*.whl")[0]
+          tops = {n.split("/")[0] for n in zipfile.ZipFile(wheel).namelist()}
+          tops = {t for t in tops if not t.endswith(".dist-info")}
+          assert tops == {"EvalRing"}, f"unexpected top-level entries in wheel: {tops}"
+          print("wheel top-level:", tops)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

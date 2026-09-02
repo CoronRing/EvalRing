@@ -1,0 +1,58 @@
+[
+  {
+    "input": "I absolutely love this new restaurant! The food is amazing and the service is excellent.",
+    "task_type": "sentiment",
+    "expected_output": "positive sentiment with high confidence"
+  },
+  {
+    "input": "The movie was terrible and completely disappointing. I hated every minute of it.",
+    "task_type": "sentiment", 
+    "expected_output": "negative sentiment with high confidence"
+  },
+  {
+    "input": "The film wasn't bad, but it wasn't great either. Just okay.",
+    "task_type": "sentiment",
+    "expected_output": "neutral sentiment with moderate confidence"
+  },
+  {
+    "input": "I'm not unhappy with the results, though I expected more.",
+    "task_type": "sentiment",
+    "expected_output": "neutral sentiment with low confidence (complex negation)"
+  },
+  {
+    "input": "The new software update includes improved performance and better user interface design.",
+    "task_type": "classification",
+    "categories": ["technology", "sports", "food", "travel"],
+    "expected_output": "technology category"
+  },
+  {
+    "input": "The championship game was intense with amazing plays from both teams.",
+    "task_type": "classification",
+    "categories": ["technology", "sports", "food", "travel"], 
+    "expected_output": "sports category"
+  },
+  {
+    "input": "The recipe requires fresh ingredients and careful cooking techniques.",
+    "task_type": "classification",
+    "categories": ["technology", "sports", "food", "travel"],
+    "expected_output": "food category"
+  },
+  {
+    "input": "Our vacation to Paris included visits to museums and beautiful hotels.",
+    "task_type": "classification",
+    "categories": ["technology", "sports", "food", "travel"],
+    "expected_output": "travel category"
+  },
+  {
+    "input": "Machine learning algorithms process data patterns",
+    "task_type": "similarity",
+    "text2": "AI systems analyze information using statistical methods",
+    "expected_output": "moderate to high semantic similarity"
+  },
+  {
+    "input": "The weather is sunny and warm today",
+    "task_type": "similarity",
+    "text2": "Financial markets showed volatility during trading",
+    "expected_output": "low semantic similarity"
+  }
+]

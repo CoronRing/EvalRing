@@ -1,0 +1,22 @@
+# The sdist carries the documentation alongside the code, so anyone reading an
+# unpacked release — a person or an agent — has the authoritative reference
+# without needing the repository.
+include LICENSE
+include README.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+include CODE_OF_CONDUCT.md
+include SECURITY.md
+include AGENTS.md
+include .env.example
+include src/EvalRing/py.typed
+recursive-include docs *.md
+
+# Not part of a release: runnable examples, the test suite, and the vendored
+# upstream benchmark checkout.
+prune examples
+prune tests
+prune CounselBench
+prune .github
+prune .agent_temp
+global-exclude __pycache__ *.py[cod] *.so .DS_Store

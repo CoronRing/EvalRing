@@ -1,0 +1,44 @@
+name: Bug report
+description: Something in EvalRing does not behave as documented.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not paste API keys or dataset content. Run artifacts under
+        `_EvalRing/` contain prompts and model responses — do not attach them.
+        For anything with security implications, follow SECURITY.md instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: The smallest snippet or command that shows the problem.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: "Paste the output of `evalring check` (it prints no secrets) and your OS."
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: EvalRing version
+      placeholder: "0.2.0"
+    validations:
+      required: true
