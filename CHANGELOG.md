@@ -6,6 +6,22 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-01
+
+A packaging release. No library code changed, so there is nothing to migrate.
+
+### Fixed
+
+- Published artifacts now carry LF line endings. 0.2.0 was built on a Windows
+  checkout with `core.autocrlf` enabled, so `python -m build` baked CRLF into
+  every module in the wheel and sdist. The files were functionally fine, but
+  they did not match what CI builds from the same commit: identical file lists,
+  29 of 37 entries differing by line endings alone. A `.gitattributes` with
+  `* text=auto eol=lf` pins this on every platform.
+- 0.2.1 is published by the release workflow through PyPI Trusted Publishing,
+  so the artifacts are built by CI and carry publish attestations. The 0.2.0
+  files were uploaded manually and have none.
+
 ## [0.2.0] - 2026-09-01
 
 First release prepared for public use. The framework's behaviour is largely
@@ -103,5 +119,6 @@ vendor-specific defaults, and adds the tests and CI a published library needs.
 - `evalring check` reports which variable supplied the API key without printing
   the key, and a test asserts the key never reaches stdout.
 
-[Unreleased]: https://github.com/CoronRing/EvalRing/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/CoronRing/EvalRing/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/CoronRing/EvalRing/releases/tag/v0.2.1
 [0.2.0]: https://github.com/CoronRing/EvalRing/releases/tag/v0.2.0

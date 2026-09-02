@@ -1,6 +1,6 @@
 # EvalRing Design Specification
 
-**Spec version:** 2.0 — applies to EvalRing 0.2.0.
+**Spec version:** 2.0 — applies to EvalRing 0.2.1.
 
 ## 1. Purpose
 

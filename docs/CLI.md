@@ -26,7 +26,7 @@ fails to authenticate or reaches the wrong endpoint.
 ```console
 $ evalring check
 {
-  "evalring_version": "0.2.0",
+  "evalring_version": "0.2.1",
   "python": "3.12.4",
   "api_key_found": true,
   "api_key_source": "$EVALRING_API_KEY",

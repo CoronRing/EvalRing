@@ -14,7 +14,7 @@ Provider credentials are resolved centrally by
 :func:`EvalRing.config.resolve_credentials`; see ``docs/CONFIGURATION.md``.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from .agent import (
     AgentResponse,

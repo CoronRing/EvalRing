@@ -106,14 +106,20 @@ the project name before it exists.
 
 ### Current state
 
-0.2.0 was uploaded manually with `twine` and an account API token, so the
-`evalring` project exists on PyPI but **no trusted publisher is configured
-yet**. Until one is, pushing a `v*` tag runs `release.yml` and it fails when it
-tries to exchange an OIDC token, after the build and metadata checks pass.
+Trusted Publishing is configured, and 0.2.1 was published through it: built by
+CI from the tag, uploaded with publish attestations, no token involved. That is
+the path every future release should take.
 
-Configure the publisher with the table above, using the project settings link
-rather than the pending-publisher flow now that the project exists. After that
-the tag-driven flow works, and no token needs to live on anyone's machine.
+0.2.0 is the exception. It was uploaded manually with `twine` and an account API
+token before the publisher was registered, so its files carry no attestation and
+were built from a Windows checkout with CRLF line endings. `.gitattributes` now
+pins LF so a local build and a CI build of the same commit agree.
+
+Because `skip-existing` is set, re-running a release whose files already reached
+PyPI logs a skip and succeeds rather than failing. That also means a re-run
+cannot replace files already on PyPI: to correct a published artifact you must
+release a new version, since PyPI never allows a filename to be reused, even
+after deletion.
 
 If you ever have to fall back to a manual upload:
 
@@ -123,7 +129,8 @@ python -m twine check dist/*
 python -m twine upload dist/*     # username __token__, password the API token
 ```
 
-Rotate the token afterwards if it was pasted anywhere it could be recorded.
+Rotate the token afterwards if it was pasted anywhere it could be recorded, and
+expect the resulting files to carry no attestation.
 
 ## Testing the pipeline
 
