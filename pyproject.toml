@@ -133,6 +133,16 @@ module = ["EvalRing.config", "EvalRing.logging_utils", "EvalRing.cli"]
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 
+[[tool.mypy.overrides]]
+# numpy is reached only transitively, through the pandas and matplotlib stubs;
+# nothing here is annotated against its types. Its bundled stubs use `type X =`
+# aliases, which mypy refuses to parse while analysing under python_version
+# 3.10, and that parse error stops the whole run. Skipping them costs no
+# coverage of our own code.
+module = ["numpy.*"]
+follow_imports = "skip"
+follow_imports_for_stubs = true
+
 [tool.coverage.run]
 source = ["EvalRing"]
 branch = true

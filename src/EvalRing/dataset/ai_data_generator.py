@@ -1,6 +1,6 @@
 import asyncio
 import os
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 from tqdm.asyncio import tqdm
@@ -168,7 +168,10 @@ class AIDataGenerator:
 
         results = loop.run_until_complete(self.generate_batch(texts, current_labels, target_labels))
 
-        df_out = df.iloc[list(original_indices)].copy()  # type: ignore[index]
+        # Positional selection with a list of row numbers yields a DataFrame, but
+        # the pandas stubs describe iloc's return as a union that collapses to
+        # Series once numpy's own stubs are not in play.
+        df_out = cast(pd.DataFrame, df.iloc[list(original_indices)]).copy()
 
         if replace_original:
             df_out[text_col] = results
