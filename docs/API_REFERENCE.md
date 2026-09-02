@@ -5,7 +5,8 @@ here are internal and may change without notice.
 
 ```python
 import EvalRing
-EvalRing.__all__   # the complete public surface, asserted by a test
+
+EvalRing.__all__  # the complete public surface, asserted by a test
 ```
 
 ---
@@ -69,8 +70,9 @@ dataset = JSONDataset(name="reviews")
 dataset.load_data("reviews.json", text_field="text", label_field="label", id_field="id")
 
 dataset = CSVDataset(name="reviews")
-dataset.load_data("reviews.csv", text_field="review", label_field="sentiment",
-                  id_field="row_id", encoding="utf-8")   # extra kwargs reach pandas
+dataset.load_data(
+    "reviews.csv", text_field="review", label_field="sentiment", id_field="row_id", encoding="utf-8"
+)  # extra kwargs reach pandas
 
 dataset = DataFrameDataset(name="reviews")
 dataset.load_data(df, text_field="text", label_field="target")
@@ -119,8 +121,12 @@ provided. The evaluator calls `initialize()` for you if you have not.
 ### `MockAgent`
 
 ```python
-MockAgent(name="mock_agent", fixed_response=None,
-          possible_outputs=["positive", "negative", "neutral"], delay=0.1)
+MockAgent(
+    name="mock_agent",
+    fixed_response=None,
+    possible_outputs=["positive", "negative", "neutral"],
+    delay=0.1,
+)
 ```
 
 Returns `fixed_response` if given, otherwise a random choice. Use `delay=0` in
@@ -129,9 +135,9 @@ tests.
 ### `RuleBasedAgent`
 
 ```python
-RuleBasedAgent(name="rule_based_agent",
-               rules={"positive": ["great", "love"]},
-               default_output="unknown")
+RuleBasedAgent(
+    name="rule_based_agent", rules={"positive": ["great", "love"]}, default_output="unknown"
+)
 ```
 
 Case-insensitive substring matching, first rule wins. A useful floor to compare
@@ -144,14 +150,14 @@ Streaming client for any OpenAI-compatible endpoint.
 ```python
 OpenAIAgent(
     name="openai-agent",
-    model_name=None,               # falls back to $EVALRING_MODEL, then "gpt-4o"
-    api_key=None,                  # resolved from the environment
-    base_url=None,                 # resolved alongside the key
+    model_name=None,  # falls back to $EVALRING_MODEL, then "gpt-4o"
+    api_key=None,  # resolved from the environment
+    base_url=None,  # resolved alongside the key
     system_prompt="You are a helpful assistant.",
     temperature=0.0,
-    max_completion_tokens=256,     # <= 0 means no cap
-    reasoning_effort=None,         # forwarded where supported, dropped elsewhere
-    error_on_empty=True,           # empty completion counts as an error
+    max_completion_tokens=256,  # <= 0 means no cap
+    reasoning_effort=None,  # forwarded where supported, dropped elsewhere
+    error_on_empty=True,  # empty completion counts as an error
 )
 ```
 
@@ -174,9 +180,15 @@ A host model consults several persona models and decides a final label.
 RoleConfig(name, persona, model_name, temperature=0.0, max_completion_tokens=400)
 
 MultiRoleHostOrchestrator(
-    client=..., labels=[...], task_name=..., task_instructions=...,
-    host_model_name=..., role_configs=[...],
-    host_temperature=0.0, host_max_completion_tokens=500, max_iterations=10,
+    client=...,
+    labels=[...],
+    task_name=...,
+    task_instructions=...,
+    host_model_name=...,
+    role_configs=[...],
+    host_temperature=0.0,
+    host_max_completion_tokens=500,
+    max_iterations=10,
 )
 ```
 
@@ -195,9 +207,9 @@ MultiRoleHostOrchestrator(
 
 ```python
 result = classify_error(message)
-result.is_rate_limit   # dedicated backoff
-result.is_transient    # worth retrying
-result.is_terminal     # retrying only wastes tokens
+result.is_rate_limit  # dedicated backoff
+result.is_transient  # worth retrying
+result.is_terminal  # retrying only wastes tokens
 ```
 
 Terminal conditions win over transient-looking text: an empty response that
@@ -221,7 +233,7 @@ also mentions a timeout is terminal. `ErrorClass` is the frozen result type.
 ### `BaseEvaluator`
 
 ```python
-BaseEvaluator(name="evaluator", output_dir=None, **kwargs)   # cache_mode kwarg accepted
+BaseEvaluator(name="evaluator", output_dir=None, **kwargs)  # cache_mode kwarg accepted
 ```
 
 `validate_inputs()` checks types, rejects an empty dataset, runs
@@ -232,14 +244,16 @@ timestamped JSON file and returns its path.
 
 ```python
 result = evaluator.evaluate(
-    agent, dataset, task_name,
+    agent,
+    dataset,
+    task_name,
     version="1.0",
     max_workers=5,
     max_retries=3,
     show_progress=False,
-    exit_on_first_error=False,   # abort if the very first request fails
-    partial_cb=None,             # called with each per-sample metric as it lands
-    error_cb=None,               # called with a diagnostic dict on each failed attempt
+    exit_on_first_error=False,  # abort if the very first request fails
+    partial_cb=None,  # called with each per-sample metric as it lands
+    error_cb=None,  # called with a diagnostic dict on each failed attempt
 )
 ```
 
@@ -268,16 +282,16 @@ metrics.
 
 ```python
 evaluator = LLMJudgeEvaluator.from_rubric(
-    rubric="Score 1-5 on factual accuracy.",   # str, Rubric, or {name: rubric}
+    rubric="Score 1-5 on factual accuracy.",  # str, Rubric, or {name: rubric}
     criteria="Accuracy against the reference answer",
-    judge_model=None,          # falls back to $EVALRING_MODEL, then "gpt-4o"
+    judge_model=None,  # falls back to $EVALRING_MODEL, then "gpt-4o"
     api_key=None,
     base_url=None,
     judge_temperature=0.0,
     judge_max_tokens=512,
-    weights=None,              # {metric_name: weight}
+    weights=None,  # {metric_name: weight}
     threshold=0.5,
-    strict_mode=False,         # binary 0/1 scoring
+    strict_mode=False,  # binary 0/1 scoring
     max_workers=5,
     max_retries=3,
 )
@@ -359,5 +373,6 @@ application:
 
 ```python
 import logging
+
 logging.getLogger("EvalRing").setLevel(logging.WARNING)
 ```

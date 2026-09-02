@@ -138,6 +138,7 @@ explicitly before constructing agents:
 
 ```python
 from dotenv import load_dotenv
+
 load_dotenv()
 ```
 
@@ -147,10 +148,10 @@ load_dotenv()
 from EvalRing import resolve_credentials
 
 creds = resolve_credentials()
-print(creds.provider)   # "evalring", "openai", "openrouter", "radium", "none"
-print(creds.source)     # "$EVALRING_API_KEY" — safe to log
-print(creds.base_url)   # None means the OpenAI default
-key = creds.require_key()   # raises MissingCredentialsError with the variable list
+print(creds.provider)  # "evalring", "openai", "openrouter", "radium", "none"
+print(creds.source)  # "$EVALRING_API_KEY" — safe to log
+print(creds.base_url)  # None means the OpenAI default
+key = creds.require_key()  # raises MissingCredentialsError with the variable list
 ```
 
 `resolve_credentials()` accepts an `env=` mapping, which makes configuration

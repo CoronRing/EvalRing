@@ -45,8 +45,7 @@ If you add a test that genuinely needs the network, mark it:
 
 ```python
 @pytest.mark.network
-def test_fetches_the_live_model_catalogue() -> None:
-    ...
+def test_fetches_the_live_model_catalogue() -> None: ...
 ```
 
 Those tests are excluded with `pytest -m "not network"`.

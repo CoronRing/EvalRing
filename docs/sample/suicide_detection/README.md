@@ -234,7 +234,7 @@ run_suite(
     host_model="openai/gpt-4o-mini",
     role_models_json='{"expert":"anthropic/claude-3-haiku"}',
     max_host_iterations=10,
-    continue_runs=True
+    continue_runs=True,
 )
 ```
 
