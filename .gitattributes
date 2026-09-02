@@ -1,0 +1,24 @@
+# Normalise line endings so a build produces the same artifact on every
+# platform. Without this, a checkout on Windows expands text files to CRLF and
+# `python -m build` bakes those endings into the wheel and sdist, so a locally
+# built release does not match the one CI produces from the same commit.
+* text=auto eol=lf
+
+# Binary files must never be line-ending converted.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.gz binary
+*.zip binary
+*.whl binary
+*.pdf binary
+*.sqlite binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+# Notebooks are JSON, so they benefit from normalised endings, but diffing them
+# line by line is rarely useful.
+*.ipynb -diff
