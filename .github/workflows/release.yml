@@ -58,3 +58,8 @@ jobs:
           path: dist/
 
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Re-running a release whose files are already on PyPI should be a
+          # no-op rather than a failure, so a run that failed after a partial
+          # upload can be retried safely.
+          skip-existing: true

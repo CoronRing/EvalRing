@@ -104,6 +104,27 @@ required reviewer so a publish cannot happen unattended.
 For the very first upload, PyPI's "pending publisher" flow lets you register
 the project name before it exists.
 
+### Current state
+
+0.2.0 was uploaded manually with `twine` and an account API token, so the
+`evalring` project exists on PyPI but **no trusted publisher is configured
+yet**. Until one is, pushing a `v*` tag runs `release.yml` and it fails when it
+tries to exchange an OIDC token, after the build and metadata checks pass.
+
+Configure the publisher with the table above, using the project settings link
+rather than the pending-publisher flow now that the project exists. After that
+the tag-driven flow works, and no token needs to live on anyone's machine.
+
+If you ever have to fall back to a manual upload:
+
+```bash
+python -m build
+python -m twine check dist/*
+python -m twine upload dist/*     # username __token__, password the API token
+```
+
+Rotate the token afterwards if it was pasted anywhere it could be recorded.
+
 ## Testing the pipeline
 
 Publish to TestPyPI first if you want to rehearse: add a TestPyPI pending

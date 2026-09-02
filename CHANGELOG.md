@@ -81,6 +81,14 @@ vendor-specific defaults, and adds the tests and CI a published library needs.
   `ClassificationMetrics`, `load_dataset`, `create_agent`, `EvalRing.agents`,
   `EvalRing.datasets`, and a CLI). It now documents the real API, verified by a
   test.
+- The README claimed every model response was cached and that a rerun only paid
+  for uncached samples. The built-in evaluators construct a `GlobalCache` but
+  never read from it; reuse is opt-in through `run-suite`'s `--cache` and
+  `--continue-runs`, plus `retry_failed_cases()`. The README now says so.
+- `mypy` aborted with a syntax error from numpy's bundled stubs, which declare
+  `type X = ...` aliases that cannot be parsed while analysing under
+  `python_version` 3.10. numpy is reached only through the pandas and
+  matplotlib stubs, so its own stubs are no longer followed.
 - A hardcoded absolute developer path in the suicide-detection suite runner.
 - A duplicated `--ignore-errors` flag in the suite runner's subprocess command.
 - `zip()` over ground truth and predictions is now strict, so a length mismatch
